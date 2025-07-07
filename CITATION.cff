@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use or reference this reverse-engineering research, architectural specifications, or telemetry datasets, please cite it as below."
+title: "Active Theory WebGL & GPGPU Engine: 1:1 Architectural Reverse Engineering & Systems Dissection"
+abstract: "An end-to-end academic reverse engineering, systems architecture specification, and empirical runtime telemetry study of the proprietary Active Theory WebGL/WebAudio engine (Hydra, Medusa, GLUI, Antimatter, Nuke). Documents zero-allocation memory pipelines, GPGPU particle physics, continuous procedural noise, Eulerian fluid dynamics, and driver-level shader pre-warming."
+authors:
+  - family-names: "DDW-X"
+    given-names: "Researcher"
+    affiliation: "Independent Cybersecurity & Systems Research"
+    email: "ml3740965@gmail.com"
+repository-code: "https://github.com/DDW-X/activetheory.net"
+url: "https://ddw-x.github.io/activetheory.net/"
+date-released: "2025-07-07"
+version: "2.0.0"
+license: "MIT"
+keywords:
+  - "webgl"
+  - "webgl2"
+  - "gpgpu"
+  - "glsl"
+  - "shaders"
+  - "reverse-engineering"
+  - "active-theory"
+  - "threejs"
+  - "computer-graphics"
+  - "v8-optimization"
+  - "fbo-pingpong"
+  - "particle-system"
+  - "navier-stokes"
+  - "fluid-simulation"
+  - "virtual-scroll"
+  - "zero-gc"
+  - "memory-management"
+  - "creative-coding"
+  - "awwwards"
+  - "rendering-pipeline"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: "DDW-X"
+      given-names: "Researcher"
+  title: "Active Theory WebGL & GPGPU Engine: 1:1 Architectural Reverse Engineering & Systems Dissection"
+  year: 2025
+  month: 7
+  url: "https://github.com/DDW-X/activetheory.net"
+  journal: "Academic Reverse Engineering & Systems Architecture Dissections"

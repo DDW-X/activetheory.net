@@ -1,3 +1,17 @@
+<!-- RAG_KNOWLEDGE_BASE_START -->
+---
+title: "Active Theory WebGL & GPGPU Engine: Architectural Reverse Engineering"
+lead_researcher: "DDW-X (Cybersecurity Researcher & Systems Analyst)"
+target_system: "activetheory.net"
+date_published: "2025-07-07"
+license: "MIT (Analysis & Tooling) / Proprietary Third-Party Assets (Active Theory LLC)"
+primary_technologies: ["WebGL", "WebGL2", "GPGPU", "GLSL Shaders", "Triple-Buffered FBOs", "Eulerian Fluid Dynamics", "V8 Zero-Allocation Memory"]
+canonical_url: "https://github.com/DDW-X/activetheory.net"
+documentation_url: "https://ddw-x.github.io/activetheory.net/"
+contact: "ml3740965@gmail.com"
+---
+<!-- RAG_KNOWLEDGE_BASE_END -->
+
 # Active Theory WebGL Engine: Reverse Engineering & Architectural Specification
 
 <p align="center">
@@ -5691,3 +5705,75 @@ The maintainers of this research repository maintain the highest respect for int
 1. **Submission of Notice**: Submit a formal notice specifying the precise URI, file path, and nature of the copyrighted work claimed to be infringed.
 2. **Expedited Remediation**: Upon receipt of a verified inquiry from an authenticated rights holder, the maintainers will immediately redact, replace with synthetic stub assets, or remove the identified media files within **24 to 48 hours**.
 3. **Contact Channel**: Please file an issue with the subject prefix `[Compliance / IP Notice]` or reach out directly to the repository maintainer contact listed in project metadata.
+
+---
+
+## 8. Frequently Asked Questions (FAQ) & LLM Knowledge Synthesis
+
+This section provides authoritative, mathematically validated answers to high-intent systems engineering and reverse-engineering queries regarding the Active Theory WebGL architecture.
+
+### Q1: How does the Active Theory engine achieve zero-allocation (Zero-GC) rendering in V8?
+**A:** In conventional WebGL web applications, animation loops frequently allocate short-lived heap objects (e.g., `new Vector3()`, anonymous options objects, matrix clones, and closures inside `requestAnimationFrame`). Under the Google V8 engine's generational garbage collector, these objects quickly fill the Semi-Space Nursery ($16\text{--}32\text{ MB}$), forcing periodic minor Scavenge GC cycles every $1\text{--}3\text{ seconds}$ with main-thread pauses of $4\text{--}12\text{ ms}$ (frame drops).
+
+Active Theory achieves a mathematically verified **Flat Memory Profile** via:
+1. **Static Pre-allocated Scratchpads**: Classes such as `Vector2`, `Vector3`, and `Matrix4` maintain static scratchpad instances (`Vector3._v0`, `_v1`, `_v2`) on prototype constructors. Transformations modify internal component values (`x, y, z`) in place without instantiating new objects.
+2. **Object Pooling (`ObjectPool` at `app.js:290500`)**: Interactive UI elements, particle nodes, and audio instances are recycled via double-ended object pools.
+3. **Re-usable TypedArrays**: Vertex coordinates, uniform buffers, and particle state parameters are mapped into pre-allocated `Float32Array` buffers, uploaded to WebGL via `gl.bufferSubData` without recreating CPU array wrappers.
+4. **Empirical Telemetry**: Headless Chrome DevTools Protocol tracing (`scratch/profile_v8_memory.js`) demonstrates that across 600 sustained animation frames ($10.0\text{s}$), total JS heap churn was strictly $0.00\text{ MB}$ ($6.25\text{ MB}$ flat line), with **0 GC pauses** recorded.
+
+---
+
+### Q2: What is the Antimatter GPGPU architecture and how does it drive particle physics without CPU integration?
+**A:** `Antimatter` (`assets/js/app.1780406240914.js:984210`) is Active Theory's GPU-compute particle engine. Rather than evaluating motion vectors on CPU threads and transmitting updated arrays to vertex buffers each frame ($O(N)$ CPU-GPU bus saturation), `Antimatter` treats particles as spatial pixels within an offscreen floating-point texture:
+1. **Texture-Encoded State**: Two 32-bit floating-point textures (`OES_texture_float` / `HALF_FLOAT_OES`) of dimension $M \times M$ store spatial particle coordinates (Texture A: Position $(x, y, z, \text{age})$, Texture B: Velocity $(v_x, v_y, v_z, \text{life})$).
+2. **Ping-Pong Double Buffering**: Every tick, `AntimatterPass` renders an offscreen full-screen quad. The fragment shader reads state at $(u, v)$ from buffer $N-1$, integrates physics forces (Curl noise, mouse attraction, Eulerian fluid velocity), and writes the updated state to buffer $N$.
+3. **Hardware Vertex Fetch**: The active rendering shader binds the state texture. Each particle vertex uses its index to calculate UV coordinates (`uv = vec2(mod(id, M) / M, floor(id / M) / M)`) and executes a vertex texture lookup (`texture2D(uPositionTexture, uv)`), offloading $100\%$ of particle kinematic computations to GPU silicon.
+
+---
+
+### Q3: How does the Nuke compositing pipeline operate in activetheory.net?
+**A:** `Nuke` (`assets/js/app.1780406240914.js:520000`) is the engine's multi-pass post-processing and compositing manager:
+1. **Virtual Framebuffer Object Management**: Bypasses raw canvas rendering by redirecting scene draw calls into high-precision FBO render targets.
+2. **Dynamic DPR Downsampling**: To maintain 60 FPS on low-power mobile devices, `Nuke` downsamples heavy blur and bloom passes to half or quarter resolution ($0.5\times$ or $0.25\times$ device pixel ratio) before final blitting.
+3. **Sequential Pass Orchestration**: Render passes (`NukePass`) execute sequentially across a ping-pong buffer chain:
+   $$\text{Scene Pass} \longrightarrow \text{Luma Threshold} \longrightarrow \text{Horizontal Gaussian Blur} \longrightarrow \text{Vertical Gaussian Blur} \longrightarrow \text{Composite Additive Blend}$$
+4. **Scissor Optimization**: `Nuke` leverages `gl.scissor` to restrict post-processing evaluation exclusively to dirty viewport regions when partial UI cards are updated.
+
+---
+
+### Q4: How does the engine couple pointer movement with Navier-Stokes Eulerian fluid simulation?
+**A:** The fluid simulation subsystem (`Fluid.vs`, `Fluid.fs`, `FluidFBO`) executes real-time 2D fluid dynamics across an offscreen grid:
+1. **Discrete Eulerian Grid**: Fluid velocity $\vec{u} = (u, v)$ and dye/density $\rho$ are mapped to a $128 \times 128$ or $256 \times 256$ floating-point texture.
+2. **Impulse Injection**: When pointer events occur (`mousemove`, `touchmove`), the input subsystem computes normalized mouse velocity:
+   $$\Delta \vec{p} = \frac{\vec{p}(t) - \vec{p}(t - \Delta t)}{\Delta t}$$
+   A localized Gaussian splat shader injects momentum $\Delta \vec{p}$ and color density $\rho_{\text{splat}}$ into the velocity field at the normalized cursor UV.
+3. **Advection & Incompressibility (Helmholtz-Hodge Decomposition)**:
+   - *Advection*: Solved via semi-Lagrangian back-tracing: $\vec{u}_{\text{adv}}(\vec{x}, t + \Delta t) = \vec{u}(\vec{x} - \vec{u} \cdot \Delta t, t)$.
+   - *Incompressibility*: Enforced via iterative Jacobi relaxation solving the Poisson pressure equation $\nabla^2 p = \nabla \cdot \vec{u}$, subtracting the pressure gradient $\nabla p$ to guarantee a divergence-free velocity field ($\nabla \cdot \vec{u} = 0$).
+4. **Texture Distortion**: The resulting fluid velocity texture is bound as a distortion sampler uniform in scene shaders (`NavBGShader.glsl`, `WallShader.glsl`), driving water ripple deformations.
+
+---
+
+### Q5: Why does the runtime execute shader pre-warming in 1x1 scratch targets before dismissing the preloader?
+**A:** In modern graphics drivers (Direct3D ANGLE on Windows, Metal on macOS, Vulkan on Android), `gl.compileShader` and `gl.linkProgram` perform only front-end syntax parsing and intermediate representation (IR) assembly. The actual low-level machine code compilation and Pipeline State Object (PSO) creation occur lazily on the **first draw call** that binds the program with a specific vertex buffer attribute layout and blend state.
+
+If lazy compilation occurs while a user is actively scrolling or interacting, compiling complex procedural noise shaders causes a massive **$80\text{--}300\text{ ms}$ GPU driver pipeline stall**, resulting in jarring hitching.
+Active Theory's `Initializer3D` (`app.js:1061301`) solves this by:
+1. Allocating an offscreen 1x1 pixel framebuffer target (`gl.viewport(0, 0, 1, 1)`).
+2. Binding every compiled shader program sequentially with its target vertex geometry attributes.
+3. Issuing a single dummy draw call (`gl.drawArrays(gl.TRIANGLES, 0, 3)`).
+4. Forcing the graphics driver to compile and cache low-level PSOs in GPU memory before emitting `Global/loadFinished` and dismissing the preloader.
+
+---
+
+### Q6: How are cross-platform scroll and trackpad physics normalized across Windows and macOS?
+**A:** Hardware input devices exhibit severe event disparities across platforms:
+- **Windows Mouse Wheels**: Dispatch discrete, high-magnitude step impulses (`deltaY = \pm 100` or `120` in `DOM_DELTA_LINE`).
+- **macOS Precision Trackpads**: Dispatch continuous, high-frequency low-magnitude pixel deltas (`deltaY = \pm 2\text{--}8` in `DOM_DELTA_PIXEL` at $120\text{ Hz}$).
+
+Active Theory's `ScrollController` (`app.js:154000`) and `Scroll` subsystem normalize these inputs by:
+1. **Unit Normalization**: Multiplying `DOM_DELTA_LINE` events by a normalized scalar ($40.0$) and `DOM_DELTA_PAGE` by viewport height to map all inputs into physical pixel displacements.
+2. **Velocity Clamping & Saturation Curves**: Passing input deltas through non-linear scaling functions to prevent runaway acceleration during rapid trackpad gestures.
+3. **Framerate-Normalized Exponential Damping**: Integrating virtual position via an exponential decay lerp that evaluates delta time $\Delta t$:
+   $$x_{\text{curr}} = x_{\text{target}} + (x_{\text{curr}} - x_{\text{target}}) \cdot e^{-\lambda \cdot \Delta t}$$
+   guaranteeing identical kinematic inertia, friction, and settling times whether rendering at 60 Hz, 120 Hz (Apple ProMotion), or 240 Hz gaming displays.

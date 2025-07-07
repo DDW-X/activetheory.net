@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Theory WebGL & GPGPU Engine: Architectural Reverse Engineering | DDW-X</title>
+    <meta name="description" content="1:1 End-to-end architectural reverse engineering, GPGPU compute systems, and zero-allocation WebGL runtime deep-dive of the Active Theory engine by DDW-X.">
+    <meta name="keywords" content="WebGL, WebGL2, GPGPU, GLSL, Shaders, Reverse Engineering, Active Theory, ThreeJS, Computer Graphics, V8 Optimization, FBO Ping-Pong, Fluid Simulation, Zero-GC">
+    <meta name="author" content="DDW-X">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ddw-x.github.io/activetheory.net/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://ddw-x.github.io/activetheory.net/">
+    <meta property="og:title" content="Active Theory WebGL Engine: Reverse Engineering & Architectural Specification">
+    <meta property="og:description" content="1:1 End-to-end reverse engineering of Active Theory's WebGL, GPGPU particle compute, zero-allocation memory, and fluid dynamics subsystems.">
+    <meta property="og:site_name" content="DDW-X Systems Research">
+    <meta property="og:image" content="https://ddw-x.github.io/activetheory.net/perf/flat-heap-profile.svg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://ddw-x.github.io/activetheory.net/">
+    <meta name="twitter:title" content="Active Theory WebGL Engine: Architectural Reverse Engineering | DDW-X">
+    <meta name="twitter:description" content="Formal systems engineering analysis, GPGPU particle physics, zero-GC V8 profiling, and WebGL shader warmup pipelines.">
+    <meta name="twitter:image" content="https://ddw-x.github.io/activetheory.net/perf/flat-heap-profile.svg">
+
+    <!-- JSON-LD Structured Data Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "TechArticle",
+          "@id": "https://ddw-x.github.io/activetheory.net/#article",
+          "headline": "Active Theory WebGL & GPGPU Engine: Architectural Reverse Engineering & Systems Dissection",
+          "description": "1:1 End-to-end architectural reverse engineering, GPGPU compute systems, and zero-allocation WebGL runtime deep-dive of the Active Theory engine.",
+          "author": {
+            "@type": "Person",
+            "name": "DDW-X",
+            "email": "ml3740965@gmail.com",
+            "jobTitle": "Cybersecurity Researcher & Reverse Engineer"
+          },
+          "datePublished": "2025-07-07T12:00:00Z",
+          "dateModified": "2025-07-07T15:45:00Z",
+          "mainEntityOfPage": "https://ddw-x.github.io/activetheory.net/",
+          "license": "https://opensource.org/licenses/MIT",
+          "keywords": [
+            "WebGL", "WebGL2", "GPGPU", "GLSL", "Reverse Engineering", "Active Theory", "V8 Optimization", "Zero-GC", "Eulerian Fluid Simulation", "Shader Pre-warming"
+          ]
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "@id": "https://github.com/DDW-X/activetheory.net",
+          "name": "Active Theory WebGL Engine Reverse Engineering",
+          "programmingLanguage": ["JavaScript", "GLSL", "WebAssembly"],
+          "codeRepository": "https://github.com/DDW-X/activetheory.net",
+          "author": {
+            "@type": "Person",
+            "name": "DDW-X"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #090d16;
+            --bg-secondary: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-purple: #a855f7;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --border-color: #334155;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            padding: 0 1.5rem;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 3rem 0;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .badge-bar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+
+        .badge {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            color: var(--accent-blue);
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lead-author {
+            color: var(--accent-purple);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        p.lead {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent-blue);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .telemetry-preview {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            text-align: center;
+        }
+
+        .telemetry-preview img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+
+        .bibtex-box {
+            background: #050811;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge-bar">
+                <span class="badge">RESEARCH REPORT</span>
+                <span class="badge">CDP TELEMETRY</span>
+                <span class="badge">GPGPU COMPUTING</span>
+                <span class="badge">ZERO-ALLOCATION V8</span>
+            </div>
+            <h1>Active Theory WebGL Engine</h1>
+            <div class="lead-author">1:1 Architectural Reverse Engineering & Systems Dissection by DDW-X</div>
+            <p class="lead">
+                A formal academic investigation into Active Theory's proprietary real-time graphics and spatial computing runtime (Hydra, Medusa, GLUI). Features 100% verified AST reconstructions, 17 system architecture diagrams, and headless Chrome DevTools Protocol (CDP) telemetry validation.
+            </p>
+            <div class="cta-buttons">
+                <a href="https://github.com/DDW-X/activetheory.net#readme" class="btn btn-primary">Read Full Architectural Specification</a>
+                <a href="https://github.com/DDW-X/activetheory.net" class="btn btn-secondary">Explore GitHub Repository</a>
+            </div>
+        </header>
+
+        <section>
+            <h2>Core Subsystem Deconstructions</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>1. Zero-GC Memory Architecture</h3>
+                    <p>Static scratchpad pooling, TypedArray buffer transfers, and object reuse patterns resulting in flat, sawtooth-free V8 heap allocations across 600 sustained frames.</p>
+                </div>
+                <div class="card">
+                    <h3>2. Antimatter GPGPU Particle System</h3>
+                    <p>Ping-pong double-buffered floating-point state textures (`OES_texture_float`) executing full Euler particle integration entirely on GPU fragment shaders.</p>
+                </div>
+                <div class="card">
+                    <h3>3. Eulerian Fluid Dynamics (Navier-Stokes)</h3>
+                    <p>Pointer-velocity splat injection, Jacobi diffusion/advection passes, and pressure Poisson projection driving interactive fluid velocity vector fields.</p>
+                </div>
+                <div class="card">
+                    <h3>4. Nuke Multi-Pass Compositing</h3>
+                    <p>Multi-resolution downsampled FBO ping-pong chains executing bloom, chromatic aberration, and lens flare passes with dynamic DPR compensation.</p>
+                </div>
+                <div class="card">
+                    <h3>5. Driver-Level Shader Pre-warming</h3>
+                    <p>Offscreen 1x1 scratch-draw passes (`gl.viewport(0, 0, 1, 1)`) pre-compiling Pipeline State Objects (PSOs) inside the preloader to eliminate scrolling hitches.</p>
+                </div>
+                <div class="card">
+                    <h3>6. Web Audio API & FFT Reactivity</h3>
+                    <p>48 kHz studio spatialization graph with 16-bin AnalyserNode FFT analysis, transient activity clamping, and psychoacoustic logarithmic filter sweeps (`logLerp`).</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="telemetry-preview">
+            <h2>Empirical Verification: Flat V8 Memory Profile</h2>
+            <p>Captured via Headless Chrome DevTools Protocol tracing over 600 continuous frames ($10.0	ext{s}$) under sustained synthetic user interaction:</p>
+            <img src="perf/flat-heap-profile.svg" alt="Flat Heap Profile vs Conventional Sawtooth Pattern">
+        </section>
+
+        <section>
+            <h2>Academic Citation (BibTeX)</h2>
+            <p>To cite this research in academic publications or software engineering analyses, please use:</p>
+            <div class="bibtex-box">@article{ddwx2025activetheory,
+  author    = {DDW-X},
+  title     = {Active Theory WebGL & GPGPU Engine: 1:1 Architectural Reverse Engineering & Systems Dissection},
+  year      = {2025},
+  month     = {7},
+  journal   = {Academic Reverse Engineering & Systems Architecture Dissections},
+  url       = {https://github.com/DDW-X/activetheory.net}
+}</div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 DDW-X (Cybersecurity Researcher & Reverse Engineer). Published under the MIT License for educational and research purposes.</p>
+            <p>All third-party media, brand assets, and proprietary 3D geometry remain the exclusive copyrighted property of Active Theory LLC.</p>
+        </footer>
+    </div>
+</body>
+</html>
