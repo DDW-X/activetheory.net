@@ -1,0 +1,43 @@
+MIT License
+
+Copyright (c) 2025 DDW-X (Cybersecurity Researcher & Reverse Engineer)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+===============================================================================
+SPECIAL NOTICE & NON-COMMERCIAL RESEARCH CLAUSE ON PROPRIETARY THIRD-PARTY MEDIA
+===============================================================================
+
+1. Strict Academic & Educational Exemption:
+   This repository represents an independent academic reverse-engineering study,
+   systems architecture analysis, and educational dissection of the interactive
+   WebGL/WebAudio engine operating on activetheory.net.
+
+2. Third-Party Creative Assets:
+   All third-party media, brand identities, custom typography, audio compositions,
+   3D mesh models (.bin, .glb), transcoded textures (.ktx2, .basis), and client
+   portfolio case studies remain the exclusive, all-rights-reserved intellectual
+   property of Active Theory LLC and their respective commercial clients.
+
+3. Non-Commercial Limitation:
+   No license is granted herein for the commercial redistribution, monetization,
+   or production deployment of any proprietary Active Theory brand asset or media
+   component. The MIT License applies strictly to original analytical text,
+   reverse-engineered architectural specifications, mathematical formulations,
+   telemetry test harnesses, and structural code derivatives authored by DDW-X.
