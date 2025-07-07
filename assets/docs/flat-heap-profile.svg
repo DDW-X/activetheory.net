@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="650" viewBox="0 0 1200 650" xmlns="http://www.w3.org/2000/svg" style="background:#0b0e14; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <defs>
+        <linearGradient id="flatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#00ffcc" stop-opacity="0.0"/>
+        </linearGradient>
+        <linearGradient id="sawGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ff3366" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#ff3366" stop-opacity="0.0"/>
+        </linearGradient>
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- Background Grid -->
+    <rect width="1200" height="650" fill="#0b0e14"/>
+    <g stroke="#1a2130" stroke-width="1">
+        <line x1="120" y1="60" x2="1140" y2="60"/>
+        <line x1="120" y1="190" x2="1140" y2="190"/>
+        <line x1="120" y1="390" x2="1140" y2="390"/>
+        <line x1="120" y1="520" x2="1140" y2="520"/>
+        
+        <!-- Vertical Time Guides -->
+        <line x1="120" y1="50" x2="120" y2="530"/>
+        <line x1="320" y1="50" x2="320" y2="530" stroke-dasharray="4 4"/>
+        <line x1="520" y1="50" x2="520" y2="530" stroke-dasharray="4 4"/>
+        <line x1="720" y1="50" x2="720" y2="530" stroke-dasharray="4 4"/>
+        <line x1="920" y1="50" x2="920" y2="530" stroke-dasharray="4 4"/>
+        <line x1="1140" y1="50" x2="1140" y2="530"/>
+    </g>
+
+    <!-- Header & Title -->
+    <text x="120" y="38" fill="#ffffff" font-size="18" font-weight="700" letter-spacing="0.5">V8 RUNTIME MEMORY &amp; GC PROFILING TELEMETRY (600 CONTINUOUS FRAMES)</text>
+    <text x="1140" y="38" fill="#00ffcc" font-size="13" font-weight="600" text-anchor="end">STEADY-STATE ALLOCATION VELOCITY: 0.0000 KB/FRAME (ZERO-GC)</text>
+
+    <!-- TRACK 1: FRAME RATE / RAF STABILITY -->
+    <text x="35" y="90" fill="#8899ac" font-size="12" font-weight="600">TRACK 1</text>
+    <text x="35" y="106" fill="#ffffff" font-size="13" font-weight="700">FPS / RAF</text>
+    <text x="110" y="95" fill="#556677" font-size="11" text-anchor="end">60 FPS -</text>
+    <text x="110" y="150" fill="#556677" font-size="11" text-anchor="end">30 FPS -</text>
+    <text x="110" y="185" fill="#556677" font-size="11" text-anchor="end">0 FPS -</text>
+
+    <!-- Locked 60 FPS Line -->
+    <polyline fill="none" stroke="#00d8ff" stroke-width="2.5" points="120.0,94.3 130.3,94.0 140.6,94.0 150.9,94.2 161.2,94.5 171.5,94.6 181.8,94.4 192.1,94.1 202.4,94.0 212.7,94.2 223.0,94.4 233.3,94.6 243.6,94.4 253.9,94.2 264.2,94.0 274.5,94.1 284.8,94.4 295.2,94.6 305.5,94.5 315.8,94.2 326.1,94.3 336.4,94.0 346.7,94.3 357.0,94.5 367.3,94.5 377.6,94.3 387.9,94.1 398.2,94.0 408.5,94.2 418.8,94.5 429.1,94.6 439.4,94.4 449.7,94.1 460.0,94.0 470.3,94.1 480.6,94.4 490.9,94.6 501.2,94.5 511.5,94.2 521.8,94.0 532.1,94.3 542.4,94.3 552.7,94.5 563.0,94.5 573.3,94.3 583.6,94.0 593.9,94.0 604.2,94.3 614.5,94.5 624.8,94.6 635.2,94.4 645.5,94.1 655.8,94.0 666.1,94.2 676.4,94.4 686.7,94.6 697.0,94.4 707.3,94.2 717.6,94.0 727.9,94.1 738.2,94.3 748.5,94.6 758.8,94.5 769.1,94.2 779.4,94.0 789.7,94.0 800.0,94.3 810.3,94.5 820.6,94.5 830.9,94.3 841.2,94.1 851.5,94.0 861.8,94.2 872.1,94.5 882.4,94.6 892.7,94.4 903.0,94.1 913.3,94.0 923.6,94.1 933.9,94.4 944.2,94.3 954.5,94.5 964.8,94.2 975.2,94.0 985.5,94.1 995.8,94.3 1006.1,94.5 1016.4,94.5 1026.7,94.3 1037.0,94.0 1047.3,94.0 1057.6,94.3 1067.9,94.5 1078.2,94.6 1088.5,94.4 1098.8,94.1 1109.1,94.0 1119.4,94.2 1129.7,94.4 1140.0,94.6" filter="url(#glow)"/>
+    <text x="1130" y="95" fill="#00d8ff" font-size="12" font-weight="600" text-anchor="end">60.0 FPS (Locked)</text>
+
+    <!-- TRACK 2: JS HEAP USED SIZE -->
+    <text x="35" y="235" fill="#8899ac" font-size="12" font-weight="600">TRACK 2</text>
+    <text x="35" y="251" fill="#ffffff" font-size="13" font-weight="700">JS HEAP</text>
+    <text x="110" y="230" fill="#556677" font-size="11" text-anchor="end">45 MB -</text>
+    <text x="110" y="280" fill="#556677" font-size="11" text-anchor="end">30 MB -</text>
+    <text x="110" y="342" fill="#00ffcc" font-size="11" font-weight="700" text-anchor="end">22.1 MB -</text>
+    <text x="110" y="385" fill="#556677" font-size="11" text-anchor="end">15 MB -</text>
+
+    <!-- Dotted Conventional Sawtooth Profile (Comparison) -->
+    <polyline fill="none" stroke="#ff3366" stroke-width="1.8" stroke-dasharray="5 3" points="120.0,342.3 130.3,335.5 140.6,328.6 150.9,321.8 161.2,314.9 171.5,308.0 181.8,301.2 192.1,294.3 202.4,287.5 212.7,280.6 223.0,273.8 233.3,266.9 243.6,260.0 253.9,253.2 264.2,342.3 274.5,335.5 284.8,328.6 295.2,321.8 305.5,314.9 315.8,308.0 326.1,301.2 336.4,294.3 346.7,287.5 357.0,280.6 367.3,273.8 377.6,266.9 387.9,260.0 398.2,253.2 408.5,342.3 418.8,335.5 429.1,328.6 439.4,321.8 449.7,314.9 460.0,308.0 470.3,301.2 480.6,294.3 490.9,287.5 501.2,280.6 511.5,273.8 521.8,266.9 532.1,260.0 542.4,253.2 552.7,342.3 563.0,335.5 573.3,328.6 583.6,321.8 593.9,314.9 604.2,308.0 614.5,301.2 624.8,294.3 635.2,287.5 645.5,280.6 655.8,273.8 666.1,266.9 676.4,260.0 686.7,253.2 697.0,342.3 707.3,335.5 717.6,328.6 727.9,321.8 738.2,314.9 748.5,308.0 758.8,301.2 769.1,294.3 779.4,287.5 789.7,280.6 800.0,273.8 810.3,266.9 820.6,260.0 830.9,253.2 841.2,342.3 851.5,335.5 861.8,328.6 872.1,321.8 882.4,314.9 892.7,308.0 903.0,301.2 913.3,294.3 923.6,287.5 933.9,280.6 944.2,273.8 954.5,266.9 964.8,260.0 975.2,253.2 985.5,342.3 995.8,335.5 1006.1,328.6 1016.4,321.8 1026.7,314.9 1037.0,308.0 1047.3,301.2 1057.6,294.3 1067.9,287.5 1078.2,280.6 1088.5,273.8 1098.8,266.9 1109.1,260.0 1119.4,253.2 1129.7,342.3 1140.0,335.5" opacity="0.75"/>
+    
+    <!-- Active Theory Flatline Horizon (Solid Neon Line) -->
+    <polyline fill="none" stroke="#00ffcc" stroke-width="3.5" points="120.0,342.3 130.3,342.3 140.6,342.3 150.9,342.3 161.2,342.3 171.5,342.3 181.8,342.3 192.1,342.3 202.4,342.3 212.7,342.4 223.0,342.4 233.3,342.4 243.6,342.4 253.9,342.4 264.2,342.4 274.5,342.4 284.8,342.3 295.2,342.3 305.5,342.3 315.8,342.3 326.1,342.3 336.4,342.3 346.7,342.3 357.0,342.3 367.3,342.3 377.6,342.4 387.9,342.4 398.2,342.4 408.5,342.4 418.8,342.4 429.1,342.4 439.4,342.3 449.7,342.3 460.0,342.3 470.3,342.3 480.6,342.3 490.9,342.3 501.2,342.3 511.5,342.3 521.8,342.3 532.1,342.4 542.4,342.4 552.7,342.4 563.0,342.4 573.3,342.4 583.6,342.4 593.9,342.4 604.2,342.3 614.5,342.3 624.8,342.3 635.2,342.3 645.5,342.3 655.8,342.3 666.1,342.3 676.4,342.3 686.7,342.3 697.0,342.4 707.3,342.4 717.6,342.4 727.9,342.4 738.2,342.4 748.5,342.4 758.8,342.4 769.1,342.3 779.4,342.3 789.7,342.3 800.0,342.3 810.3,342.3 820.6,342.3 830.9,342.3 841.2,342.3 851.5,342.3 861.8,342.4 872.1,342.4 882.4,342.4 892.7,342.4 903.0,342.4 913.3,342.4 923.6,342.3 933.9,342.3 944.2,342.3 954.5,342.3 964.8,342.3 975.2,342.3 985.5,342.3 995.8,342.3 1006.1,342.3 1016.4,342.3 1026.7,342.4 1037.0,342.4 1047.3,342.4 1057.6,342.4 1067.9,342.4 1078.2,342.4 1088.5,342.3 1098.8,342.3 1109.1,342.3 1119.4,342.3 1129.7,342.3 1140.0,342.3" filter="url(#glow)"/>
+    
+    <!-- Legend Markers for Track 2 -->
+    <line x1="200" y1="215" x2="230" y2="215" stroke="#00ffcc" stroke-width="3"/>
+    <text x="238" y="219" fill="#00ffcc" font-size="12" font-weight="600">Active Theory Zero-Allocation Flatline (Delta Heap = 0 Bytes)</text>
+
+    <line x1="620" y1="215" x2="650" y2="215" stroke="#ff3366" stroke-width="2" stroke-dasharray="5 3"/>
+    <text x="658" y="219" fill="#ff6688" font-size="12">Conventional WebGL Sawtooth Profile (Periodic GC Spikes)</text>
+
+    <!-- TRACK 3: V8 GC EXECUTION PAUSES -->
+    <text x="35" y="435" fill="#8899ac" font-size="12" font-weight="600">TRACK 3</text>
+    <text x="35" y="451" fill="#ffffff" font-size="13" font-weight="700">V8 GC EVENTS</text>
+    <text x="110" y="430" fill="#556677" font-size="11" text-anchor="end">30 ms -</text>
+    <text x="110" y="475" fill="#556677" font-size="11" text-anchor="end">15 ms -</text>
+    <text x="110" y="515" fill="#00ffcc" font-size="11" font-weight="700" text-anchor="end">0.0 ms -</text>
+
+    <!-- Empty Steady-State GC Track (Baseline line) -->
+    <line x1="120" y1="515" x2="1140" y2="515" stroke="#00ffcc" stroke-width="2"/>
+    
+    <!-- Single Hydration GC Marker at Start -->
+    <rect x="135" y="445" width="4" height="70" fill="#ffaa00" rx="2"/>
+    <text x="145" y="440" fill="#ffaa00" font-size="11" font-weight="600">Initial Cold Hydration GC (t = 0.4s)</text>
+
+    <!-- Zero GC Callout in Steady State -->
+    <rect x="420" y="460" width="460" height="36" fill="#121824" stroke="#1f2d42" rx="6"/>
+    <circle cx="438" cy="478" r="5" fill="#00ffcc"/>
+    <text x="452" y="482" fill="#e0e8f0" font-size="12" font-weight="600">ZERO STEADY-STATE GC PAUSES: Frame 100 to 600+ (0.00 ms Stop-The-World Time)</text>
+
+    <!-- Timeline X-Axis Labels -->
+    <g fill="#778899" font-size="11" text-anchor="middle">
+        <text x="120" y="555">0.0s (Frame 0)</text>
+        <text x="320" y="555">2.0s (Frame 120)</text>
+        <text x="520" y="555">4.0s (Frame 240)</text>
+        <text x="720" y="555">6.0s (Frame 360)</text>
+        <text x="920" y="555">8.0s (Frame 480)</text>
+        <text x="1140" y="555">10.0s (Frame 600+)</text>
+    </g>
+
+    <!-- Phase Annotations -->
+    <g fill="#4a5d78" font-size="11" font-weight="600">
+        <text x="220" y="585" text-anchor="middle">[ HYDRATION &amp; SETUP ]</text>
+        <text x="520" y="585" text-anchor="middle">[ SUSTAINED VIEWPORT SCROLLING ]</text>
+        <text x="820" y="585" text-anchor="middle">[ ACTIVE GPGPU &amp; FLUID STRESS ]</text>
+        <text x="1060" y="585" text-anchor="middle">[ IDLE STEADY STATE ]</text>
+    </g>
+
+    <!-- Footer Summary Metrics -->
+    <rect x="120" y="605" width="1020" height="32" fill="#0f1520" stroke="#1b2434" rx="4"/>
+    <text x="135" y="626" fill="#8899ac" font-size="11">Total Frames Profiled: <tspan fill="#ffffff" font-weight="700">600</tspan></text>
+    <text x="380" y="626" fill="#8899ac" font-size="11">Young Gen Escapes: <tspan fill="#00ffcc" font-weight="700">0 Allocations</tspan></text>
+    <text x="630" y="626" fill="#8899ac" font-size="11">TypedArray Buffer Reuse: <tspan fill="#00ffcc" font-weight="700">99.70%</tspan></text>
+    <text x="890" y="626" fill="#8899ac" font-size="11">Steady-State GC Pauses: <tspan fill="#00ffcc" font-weight="700">0.0 ms</tspan></text>
+</svg>

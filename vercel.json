@@ -1,0 +1,95 @@
+{
+  "version": 2,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "routes": [
+    {
+      "src": "/geo",
+      "dest": "./cdn/us-central1-at-services.cloudfunctions.net/geo"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/cdn/(.*)",
+      "dest": "/cdn/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS, HEAD"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "*"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.wasm",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/wasm"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.glb",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "model/gltf-binary"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.gltf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "model/gltf+json"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.ktx2",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/ktx2"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.bin",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/octet-stream"
+        }
+      ]
+    }
+  ]
+}
