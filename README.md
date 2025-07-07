@@ -1,39 +1,28 @@
-<!-- RAG_KNOWLEDGE_BASE_START -->
----
-title: "Active Theory WebGL & GPGPU Engine: Architectural Reverse Engineering"
-lead_researcher: "DDW-X (Cybersecurity Researcher & Systems Analyst)"
-target_system: "activetheory.net"
-date_published: "2025-07-07"
-license: "MIT (Analysis & Tooling) / Proprietary Third-Party Assets (Active Theory LLC)"
-primary_technologies: ["WebGL", "WebGL2", "GPGPU", "GLSL Shaders", "Triple-Buffered FBOs", "Eulerian Fluid Dynamics", "V8 Zero-Allocation Memory"]
-canonical_url: "https://github.com/DDW-X/activetheory.net"
-documentation_url: "https://ddw-x.github.io/activetheory.net/"
-contact: "ml3740965@gmail.com"
----
-<!-- RAG_KNOWLEDGE_BASE_END -->
+<div align="center">
 
-# Active Theory WebGL Engine: Reverse Engineering & Architectural Specification
+# Active Theory WebGL & GPGPU Engine
+### Architectural Reconstruction & Zero-GC Systems Reverse Engineering
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Lead%20Researcher-DDW--X-7c3aed.svg?style=for-the-badge&logo=target" alt="Lead Researcher: DDW-X" />
-  <img src="https://img.shields.io/badge/Discipline-Cybersecurity%20%26%20Reverse%20Engineering-0284c7.svg?style=for-the-badge&logo=gnubash" alt="Discipline" />
-  <img src="https://img.shields.io/badge/Methodology-Headless%20CDP%20%26%20AST%20Disassembly-ea580c.svg?style=for-the-badge&logo=googlechrome" alt="Methodology" />
-  <img src="https://img.shields.io/badge/Analysis-100%25%20Original%20Research-16a34a.svg?style=for-the-badge" alt="Analysis" />
-  <img src="https://img.shields.io/badge/License-MIT%20%2F%20CC%20BY--NC%204.0-yellow.svg?style=for-the-badge" alt="License" />
-</p>
+[![Research](https://img.shields.io/badge/Research-Independent_Security_%26_Systems-000000?style=for-the-badge&logo=target)](https://github.com/DDW-X/activetheory.net)
+[![Lead](https://img.shields.io/badge/Lead_Researcher-DDW--X-blue?style=for-the-badge&logo=hackthebox)](https://github.com/DDW-X)
+[![License](https://img.shields.io/badge/License-MIT_Analysis-green?style=for-the-badge)](LICENSE)
+[![Target](https://img.shields.io/badge/Target-activetheory.net-red?style=for-the-badge)](https://activetheory.net)
+
+</div>
 
 ---
 
-### Research Authorship & Investigation Metadata
-
-| Research Specification | Project Metadata |
+| System Parameter | Specification / Registry Detail |
 | :--- | :--- |
-| **Lead Researcher & Reverse Engineer** | **DDW-X** (Cybersecurity Researcher, Low-Level Systems Analyst & Reverse Engineer) |
-| **Investigation Scope** | 100% End-to-End Reverse Engineering, AST Deconstruction, Custom Headless CDP Telemetry Instrumentation, and Architectural Documentation |
-| **Target Production System** | Active Theory Production Deployment (`activetheory.net`, `assets/js/app.1780406240914.js`, Hydra Framework) |
-| **Instrumentation Framework** | Custom Chromium DevTools Protocol (CDP) WebSocket diagnostic harness engineered by **DDW-X** |
-| **Verification Methodology** | Dynamic WebGL context interception, V8 heap metric sampling, headless event synthesis, and AST disassembly |
-| **Document Version** | 2.0.0 (Comprehensive Architectural Specification & Empirical Telemetry Benchmark) |
+| **Project Identity** | 1:1 Production Engine Decompilation & Architectural Dissection |
+| **Principal Researcher** | **DDW-X** (Cybersecurity Researcher & Low-Level Systems Analyst) |
+| **Primary Systems** | WebGL / WebGL2, GLSL Shaders, GPGPU Particle Engine, Navier-Stokes Solver |
+| **Memory Architecture** | V8 Monomorphic Shape Alignment, Zero-GC Static Pooling, TypedArray Direct Transfers |
+| **Target Codebase** | `activetheory.net` (Hydra Framework / Nuke Compositor / Antimatter GPGPU) |
+| **Documentation Portal** | [https://ddw-x.github.io/activetheory.net/](https://ddw-x.github.io/activetheory.net/) |
+| **Security & Inquiries** | `ml3740965@gmail.com` |
+
+---
 
 > [!IMPORTANT]
 > ### Academic Research & Educational Preservation Notice
